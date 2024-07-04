@@ -27,3 +27,22 @@ Through touch command in git bash we install files, through mdkir command we ins
 7) .env file
 8) public and src folder 
 9) add code in gitignore through gitignore generator
+
+
+### How to connect a database?
+
+database used: MONGODB
+password: aastha123
+
+ 
+there can be multiple approaches but we are using this:
+1) create db folder
+2) write connection code udhr
+3) index file m connection code export krao
+4) fir use export krdo
+ this approach is good for professional and production purposes.
+
+
+ When we try to talk to database there can be some errors, so we should wrap it in try catch block or promises.
+ Database is always in another continent.
+ It takes time to talk to databse so we should apply async await.
