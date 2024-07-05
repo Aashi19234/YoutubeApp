@@ -41,8 +41,28 @@ there can be multiple approaches but we are using this:
 3) index file m connection code export krao
 4) fir use export krdo
  this approach is good for professional and production purposes.
-
+ 5) in env file write PORT and MONGODB_URI.
 
  When we try to talk to database there can be some errors, so we should wrap it in try catch block or promises.
  Database is always in another continent.
  It takes time to talk to databse so we should apply async await.
+
+
+
+### express 
+req k abdr kaafi optiobs h:
+1) req.params- url se data isse aata h
+2) req.body: forms,json esa data aa sktaa h
+3) req.cookies: cookies parser middleware , this property is an object that contains cookies sent by request.if request has no cookies , it deffaults to {} .
+
+CORS: it helps to do parsing for cross origin resource sharing.
+
+
+### Middleware
+
+In Node.js, middleware functions are functions that sit between the request and response cycle in an application. They have access to the request object (req), the response object (res), and the next middleware function in the stack.
+
+For example: we are requesting /instagram and res is res.send("Aastha") but in between this we are checking if user is logged in this is middleware.
+If they are logged in then we will send them response.
+
+(err,req,res,next), next is a flag
