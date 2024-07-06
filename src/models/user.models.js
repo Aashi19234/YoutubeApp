@@ -62,7 +62,7 @@ const userschema= new Schema({
 userschema.pre("save",async function (next){
     if(! this.isModified("password")) return next() ;//jab data save krega toh hr baari password change hga so password field jb modifcation m jaegi tbhi y run krna uske alava ni vo krne k lie hm y krre h
 
-this.password=bcrypt.hash(this.password, 10)// it takes two parameters : kisko bcrypt krna h and kitnes rounds or salts
+this.password=await bcrypt.hash(this.password, 10)// it takes two parameters : kisko bcrypt krna h and kitnes rounds or salts
 next()
 })// here we are taking save event , we want some fucntion to be performed before save event
 

@@ -10,6 +10,7 @@ class Apiresponse{
     }
 }
 
+export {Apiresponse}
 
 /*status code: Api servers has status codes.
 Informational responses (100 – 199)

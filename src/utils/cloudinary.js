@@ -2,7 +2,7 @@ import {v2 as cloudinary} from "cloudinary"
 
 import fs from "fs" // file system h 
 
-import { v2 as cloudinary } from 'cloudinary';
+
 
 
     // Configuration
@@ -13,7 +13,7 @@ import { v2 as cloudinary } from 'cloudinary';
     });
     
 
-    import { v2 as cloudinary } from 'cloudinary';
+   
 
 
 
