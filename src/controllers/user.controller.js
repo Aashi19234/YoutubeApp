@@ -40,7 +40,7 @@ const coverimage= coverimagelocalpath ? await uploadoncloudinary(coverimagelocal
 
 
 if(!avatar){
-    throw new Apierror(400,"Avatar file is required")
+    throw new Apierror(400,"Avatar file not uploaded")
 }
 
 

@@ -1,6 +1,11 @@
 import {v2 as cloudinary} from "cloudinary"
 
 import fs from "fs" // file system h 
+import dotenv from 'dotenv';
+
+dotenv.config({ path: './.env' });
+
+
 
 
 
