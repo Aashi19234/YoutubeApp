@@ -3,6 +3,7 @@ import {Apierror} from "../utils/Apierror.js"
 import {User} from "../models/user.models.js"
 import {uploadoncloudinary} from "../utils/cloudinary.js"
 import { Apiresponse } from "../utils/Apiresponse.js";
+import mongoose from "mongoose";
 
 
 const registeruser=asynchandler( async (req,res)=>{
@@ -27,15 +28,16 @@ throw new Apierror(400,"All fields are required")
         throw new Apierror(409,"User with email or username already exists")
 
     }
-    const avatarlocalpath= req.files?.avatar[0]?.path; // images
-  const coverimagelocalpath=  req.files?.coverimage[0]?.path;
+    const avatarlocalpath= req.files?.avatar?.[0]?.path; // images
+  const coverimagelocalpath=  req.files?.coverimage?.[0]?.path;
 
 if(!avatarlocalpath){
     throw new Apierror(400,"Avatar file is required")
 }
 
 const avatar=await uploadoncloudinary(avatarlocalpath)
-const coverimage=await uploadoncloudinary(coverimagelocalpath)
+const coverimage= coverimagelocalpath ? await uploadoncloudinary(coverimagelocalpath) : null;
+
 
 if(!avatar){
     throw new Apierror(400,"Avatar file is required")

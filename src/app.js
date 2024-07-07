@@ -26,12 +26,12 @@ app.use(cookieParser())
 
 // routes import
 
-import userRouter from './routes/user.routes.js'
+import router from './routes/user.routes.js'
 
 // routes declaration
 
 // router ko laane k lie middleware lana pdega
-app.use("/api/v1/users", userRouter) // /users pr userrouter aa jaega
+app.use("/api/v1/users", router) // /users pr userrouter aa jaega
 
 
 

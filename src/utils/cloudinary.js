@@ -17,12 +17,7 @@ import fs from "fs" // file system h
 
 
 
-    // Configuration
-    cloudinary.config({ 
-        cloud_name: 'diwt649vq', 
-        api_key: '332555357942144', 
-        api_secret: '<your_api_secret>' // Click 'View Credentials' below to copy your API secret
-    });
+    
 
 
     const uploadoncloudinary=async(localfilepath)=>{
@@ -31,9 +26,11 @@ import fs from "fs" // file system h
             // upload the file on cloudinary
            const response= await cloudinary.uploader.upload(localfilepath,{
                 resource_type:"auto"
+
             })
 // file has been uploaded successfully
-console.log("file is uploaded on cloudinary",response.url);
+//console.log("file is uploaded on cloudinary",response.url);
+fs.unlinkSync(localfilepath)
 return response;
         } catch(error){
            // file upload ni hui toh safe cleaning purpose se hme us file ko ane server se hata dena chahie vrna bahot saari corrupted
