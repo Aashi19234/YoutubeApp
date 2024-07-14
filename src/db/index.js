@@ -1,16 +1,15 @@
 
-
 import mongoose from 'mongoose';
 import { DB_NAME } from '../constants.js'; // Adjust the path as per your project structure
+import dotenv from 'dotenv';
+
+dotenv.config({ path: './.env' });
 
 const connectDB = async () => {
   try {
     const uri = process.env.MONGODB_URI;
 
-    const connectionInstance = await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const connectionInstance = await mongoose.connect(uri);
 
     console.log(`MongoDB connected!! DB Host: ${connectionInstance.connection.host}`);
 
@@ -21,4 +20,5 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+
 

@@ -6,6 +6,22 @@ import { Apiresponse } from "../utils/Apiresponse.js";
 import mongoose from "mongoose";
 
 
+const generateAccessAndRefreshTokens= async(userid)=>{
+try{
+const user= await User.findById(userid)
+const refreshtoken= user.generateRefreshToken()
+const accesstoken= user.generateAccessToken()
+user.refreshtoken=refreshtoken
+await user.save({validateBeforeSave: false})
+
+return {accesstoken,refreshtoken}
+}
+catch (error){
+throw new Apierror('Something went wrong while generating access and refresh token')
+
+}
+}
+
 const registeruser=asynchandler( async (req,res)=>{
     // user details req m milti h generally
     const {fullname,email,username,password}=req.body
@@ -71,8 +87,43 @@ return res.status(201).json(
 
 })
 
+const loginuser=asynchandler(async(req,res)=>{
+/*
+req body->data
+username or email
+find the user 
+password check 
+access and refresh token 
+send tokens in cookie
+ */
 
-export {registeruser}
+const {email,username,password}=req.body
+if(!username || !email){
+    throw new Apierror(400,'username or email is required')
+}
+const user = await User.findOne({
+    $or: [{username},{email}] // yaha ya toh username ke basis pr value mil jae ya email
+
+})
+
+if(!user){
+    throw new Apierror(404, 'User does not exists');
+}
+
+const ispasswordvalid = await user.isPasswordCorrect(password)
+
+if(!ispasswordvalid){
+    throw new Apierror(401, 'Invalid user credentials');
+}
+
+})
+
+const {accesstoken,refreshtoken}=await generateAccessAndRefreshTokens(user._id)
+
+
+
+
+export {registeruser,loginuser}
 
 
 // How to do api testing?
@@ -96,6 +147,10 @@ How to do it?
 9) check for user creation
 10) return response
 
+
+
+User jo h vo mongoose ka user hai isme hm mongodb k methods le skte h.
+user hmara apna h isme hm mongodb  methods ni le skte
 
 
 

@@ -152,6 +152,59 @@ Validation and Error Handling: The middleware can handle validation (e.g., ensur
 Asynchronous Handling: Middleware can manage asynchronous operations like reading and writing files, ensuring that your main handler is not blocked and can proceed once the files are processed.
 
 
+### Refresh token
+
+Purpose:
+
+Refresh tokens are used to obtain a new access token without re-authenticating the user.
+They help maintain user sessions without requiring frequent logins.
+
+Lifespan:
+
+Typically has a longer lifespan (e.g., days, weeks, or even months).
+
+Storage:
+
+Stored more securely, often in HTTP-only cookies to prevent access by JavaScript.
+Sometimes stored in secure storage mechanisms on the client side.
+
+Usage:
+
+Sent to a specific endpoint (e.g., /token/refresh) to request a new access token when the current access token expires.
+Not sent with every request to protected resources.
+
+Security:
+
+Due to their long lifespan, they must be stored and transmitted securely.
+Should be protected against Cross-Site Request Forgery (CSRF) and other attacks.
+If compromised, can allow for issuing new access tokens, so their security is critical.
+
+### Access Token
+
+Purpose:
+
+Access tokens are used to grant access to protected resources or endpoints.
+They are usually short-lived to minimize the impact of a token being compromised.
+
+Lifespan:
+
+Typically has a short lifespan (e.g., minutes to an hour).
+
+Storage:
+
+Stored client-side, often in memory or in secure storage mechanisms like HTTP-only cookies or local storage (although storing in local storage is less secure).
+
+Usage:
+
+Sent with every request to a protected endpoint, usually in the Authorization header (Authorization: Bearer <access_token>).
+
+Security:
+
+Since they are frequently transmitted, they should be securely stored and transmitted over HTTPS.
+Short lifespan reduces the risk of long-term abuse if compromised.
+
+
+
 
 ### HTTP CRASH COURSE
 
@@ -166,5 +219,7 @@ URN
 read from here.
 
 manage state means user ki state ki user guest hai logged in h ya kya.
+
+
 
 
