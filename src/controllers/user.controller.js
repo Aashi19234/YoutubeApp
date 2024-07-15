@@ -116,14 +116,62 @@ if(!ispasswordvalid){
     throw new Apierror(401, 'Invalid user credentials');
 }
 
-})
+
 
 const {accesstoken,refreshtoken}=await generateAccessAndRefreshTokens(user._id)
 
+const loggedinuser= await User.findById(user._id)
+.select("-password -refreshtoken")
+
+const options={ // cookies
+    httpOnly:true,
+    secure:true
+}// y krne k baad cookies server se modify hngi bss frontend se ni
+
+return res.status(200).cookie("accesstoken", accesstoken,options)
+.cookie("refreshtoken", refreshtoken,options)
+.json(
+    new Apiresponse(
+        200,
+        {
+            user:loggedinuser,accesstoken,refreshtoken
+        },
+        "User logged in successfully"
+    )
 
 
+)
 
-export {registeruser,loginuser}
+})
+
+const logoutuser=asynchandler(async(req,res)=>{
+   await  User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                refreshToken:undefined // set se value update krte h
+
+            }
+
+        },
+        {
+            new:true
+        }
+        
+
+
+    )
+    const options={ // cookies
+        httpOnly:true,
+        secure:true
+    }
+    return res.status(200).clearCookie("accesstoken", options)
+    .clearCookie("refreshtoken", options)
+    .json(new Apiresponse(200, {},"User logged out") )
+})
+
+
+export {registeruser,loginuser,logoutuser}
 
 
 // How to do api testing?
@@ -146,6 +194,7 @@ How to do it?
 8) remove password and refresh token field from response
 9) check for user creation
 10) return response
+
 
 
 

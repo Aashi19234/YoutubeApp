@@ -1,8 +1,9 @@
 // method kb run hho, kisi particular url pr , y url hta h routes
 
 import { Router } from "express";
-import { registeruser } from "../controllers/user.controller.js";
+import { loginuser, logoutuser, registeruser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyjwt } from "../middlewares/auth.middleware.js";
 
 
 const router=Router()
@@ -21,6 +22,13 @@ router.route("/register").post(// response se pehle ek middleware lga lia upload
     ]),
     registeruser
 )
+
+router.route("/login").post(loginuser)
+
+// secured routes
+router.route("/logout").post( verifyjwt,logoutuser)
+
+// verifyjwt middleware hai isko run hne ke baad logoutuser run hgaa and y islie hga kyuki hmne next() use kia tha jiska mtlb h middleware run hne k baad uske baad vala run krdo method
 
 
 // y hga url hmara: users jo h router declaration m vo hmara prefix hga
