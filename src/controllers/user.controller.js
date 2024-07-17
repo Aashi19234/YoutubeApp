@@ -4,6 +4,7 @@ import {User} from "../models/user.models.js"
 import {uploadoncloudinary} from "../utils/cloudinary.js"
 import { Apiresponse } from "../utils/Apiresponse.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken"
 
 
 const generateAccessAndRefreshTokens= async(userid)=>{
@@ -89,6 +90,7 @@ return res.status(201).json(
 
 const loginuser=asynchandler(async(req,res)=>{
 /*
+ALGORITHM:
 req body->data
 username or email
 find the user 
@@ -98,7 +100,7 @@ send tokens in cookie
  */
 
 const {email,username,password}=req.body
-if(!username || !email){
+if(!(username || email)){ // jb username ya email m se koi bhi chlega
     throw new Apierror(400,'username or email is required')
 }
 const user = await User.findOne({
@@ -170,8 +172,51 @@ const logoutuser=asynchandler(async(req,res)=>{
     .json(new Apiresponse(200, {},"User logged out") )
 })
 
+const refreshAccessToken= asynchandler(async(req,res)=>{
+    const incomingrefreshtoken= req.cookies.refreshToken || req.body.refreshToken
+    if(!incomingrefreshtoken){
+        throw new Apierror(401, "Unauthorised request")
+    }
+   try {
+    const decodedtoken= jwt.verify(
+         incomingrefreshtoken,
+         process.env.REFRESH_TOKEN_SECRET
+     )
+ 
+   const user=  await  User.findById(decodedtoken?._id)
+   if(!user){
+     throw new Apierror(401,"Invalid refresh token")
+   }  
+   if(incomingrefreshtoken!=user?.refreshToken){
+     throw new Apierror(401,"Refresh token is expired or used")
+   }
+ 
+   const options={
+     httpOnly:true,
+     secure:true
+   }
+  const {accessToken,newrefreshToken}=await  generateAccessAndRefreshTokens(user._id)
+ 
+  return res.status(200)
+  .cookie("refreshToken",newrefreshToken ,options)
+  .cookie("accessToken",accessToken ,options)
+  .json(
+     new Apiresponse(200,
+         {
+         accessToken,refreshToken:newrefreshToken},
+         "Access token refreshed"
+     )
+  )
+   } catch (error) {
+    throw new Apierror(401,error?.message ||"Invalid refresh token")
 
-export {registeruser,loginuser,logoutuser}
+    
+   }
+})
+
+
+
+export {registeruser,loginuser,logoutuser,refreshAccessToken}
 
 
 // How to do api testing?

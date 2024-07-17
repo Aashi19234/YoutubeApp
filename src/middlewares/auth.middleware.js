@@ -1,10 +1,10 @@
 // it will verify whether user exists or not
 
 
-import { Apierror } from "../utils/Apierror";
-import { asynchandler } from "../utils/asynchandler";
+import { Apierror } from "../utils/Apierror.js";
+import { asynchandler } from "../utils/asynchandler.js";
 import jwt from "jsonwebtoken"
-import { User } from "../models/user.models";
+import { User } from "../models/user.models.js";
 
 export const verifyjwt=asynchandler(async(req,res,next)=>{
   try {

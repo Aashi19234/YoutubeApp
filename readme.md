@@ -185,6 +185,7 @@ Purpose:
 
 Access tokens are used to grant access to protected resources or endpoints.
 They are usually short-lived to minimize the impact of a token being compromised.
+User ko baar baaar apna username or password ni dena pdega.
 
 Lifespan:
 
